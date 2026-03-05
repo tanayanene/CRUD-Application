@@ -4,6 +4,7 @@ import { fetchEmployees, deleteEmployee } from "../../slices/EmployeeSlice";
 import { fetchCountries } from "../../slices/CountrySlice";
 import EmployeeTable from "../../components/table/Table";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "../../components/deleteModal/DeleteModal";
 
 const Info = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,8 @@ const Info = () => {
   const { list, loading } = useSelector((state) => state.employee);
   const { countryList } = useSelector((state) => state.country)
   const [searchId, setSearchId] = useState("");
+const [openDelete, setOpenDelete] = useState(false);
+const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCountries())
@@ -30,9 +33,19 @@ const Info = () => {
   emp.id.includes(searchId)
 );
 
-  const onDelete = (id) => {
-    dispatch(deleteEmployee(id)) 
-  }
+  const handleDeleteClick = (id) => {
+    setSelectedId(id);
+    setOpenDelete(true);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteEmployee(selectedId));
+    setOpenDelete(false);
+  };
+
+  const handleClose = () => {
+  setOpenDelete(false);
+};
 
   const onEdit = (id) => {
     navigate(`/employees/edit/${id}`)
@@ -40,7 +53,16 @@ const Info = () => {
 
   if (loading) return <p>Loading...</p>;
 
-  return <EmployeeTable employees={filteredEmployees} onDelete={onDelete} onEdit={onEdit} setSearchId={setSearchId} searchId={searchId}/>;
+  return (
+    <>
+    <EmployeeTable employees={filteredEmployees} onDelete={handleDeleteClick} onEdit={onEdit} setSearchId={setSearchId} searchId={searchId}/>
+    <DeleteModal
+    open={openDelete}
+    onClose={handleClose}
+    onConfirm={handleConfirmDelete}
+    />
+    </>
+    )
 };
 
 export default Info;
