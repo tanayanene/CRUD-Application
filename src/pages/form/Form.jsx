@@ -3,6 +3,15 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { addEmployee, updateEmployee } from "../../slices/EmployeeSlice";
+import {
+  Grid,
+  TextField,
+  MenuItem,
+  Button,
+  Paper,
+  Typography,
+  Box
+} from "@mui/material";
 
 const EmployeeForm = () => {
   const { id } = useParams();
@@ -44,116 +53,142 @@ const EmployeeForm = () => {
     navigate("/");
   };
 
-  return (
-    <div style={{ width: "400px", margin: "auto" }}>
-      <h2>{id ? "Edit Employee" : "Add Employee"}</h2>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-
-        <div>
-          <label>Name</label>
-          <input
-            {...register("name", {
-              required: "Name is required",
-              minLength: {
-                value: 3,
-                message: "Minimum 3 characters required",
-              },
-              maxLength: {
-                value: 50,
-                message: "Maximum 50 characters allowed",
-              },
-            })}
-          />
-          <p>{errors.name?.message}</p>
-        </div>
-
-        <div>
-          <label>Email</label>
-          <input
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value:
-                  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                message: "Invalid email address",
-              },
-            })}
-          />
-          <p>{errors.email?.message}</p>
-        </div>
-
-        <div>
-          <label>Mobile</label>
-          <input
-            {...register("mobile", {
-              required: "Mobile is required",
-              minLength: {
-                value: 10,
-                message: "Mobile must be 10 digits",
-              },
-              maxLength: {
-                value: 10,
-                message: "Mobile must be 10 digits",
-              },
-            })}
-          />
-          <p>{errors.mobile?.message}</p>
-        </div>
-
-        <div>
-          <label>Country</label>
-          <select
-            {...register("country", {
-              required: "Country is required",
-            })}
-          >
-            <option value="">Select Country</option>
-            {countryList.map((c, index) => (
-              <option key={index} value={c.country}>
-                {c.country}
-              </option>
-            ))}
-          </select>
-          <p>{errors.country?.message}</p>
-        </div>
-
-        <div>
-          <label>State</label>
-          <input
-            {...register("state", {
-              required: "State is required",
-            })}
-          />
-          <p>{errors.state?.message}</p>
-        </div>
-
-        <div>
-          <label>District</label>
-          <input
-            {...register("district", {
-              required: "District is required",
-            })}
-          />
-          <p>{errors.district?.message}</p>
-        </div>
-
-        <button type="submit">
-          {id ? "Update Employee" : "Add Employee"}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          style={{ marginLeft: "10px" }}
+ return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        mt: 5,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 4,
+          width: 600,
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ mb: 3, textAlign: "center", fontWeight: 600 }}
         >
-          Cancel
-        </button>
+          Add Employee
+        </Typography>
 
-      </form>
-    </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={3}>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Name"
+                fullWidth
+                {...register("name", {
+                  required: "Name is required",
+                })}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Email"
+                fullWidth
+                {...register("email", {
+                  required: "Email is required",
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Mobile"
+                fullWidth
+                {...register("mobile", {
+                  required: "Mobile is required",
+                })}
+                error={!!errors.mobile}
+                helperText={errors.mobile?.message}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="State"
+                fullWidth
+                {...register("state", {
+                  required: "State is required",
+                })}
+                error={!!errors.state}
+                helperText={errors.state?.message}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                select
+                label="Country"
+                fullWidth
+                sx={{ minWidth: 225 }}
+                {...register("country", {
+                  required: "Country is required",
+                })}
+                error={!!errors.country}
+                helperText={errors.country?.message}
+              >
+                <MenuItem value="">
+                  <em>Select Country</em>
+                </MenuItem>
+
+                {countryList?.map((c, index) => (
+                  <MenuItem key={index} value={c.country}>
+                    {c.country}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                label="District"
+                fullWidth
+                {...register("district", {
+                  required: "District is required",
+                })}
+                error={!!errors.district}
+                helperText={errors.district?.message}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 2,
+                mt: 1,
+              }}
+            >
+              <Button variant="outlined" onClick={() => navigate("/")}>
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                variant="contained"
+              >
+                Submit
+              </Button>
+            </Grid>
+
+          </Grid>
+        </form>
+      </Paper>
+    </Box>
   );
-
 };
 
 
