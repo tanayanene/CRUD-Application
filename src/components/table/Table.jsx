@@ -12,11 +12,15 @@ import {
   Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
+
 
 const EmployeeTable = ({
   employees,
   loading,
   onDelete,
+  setSearchId,
+  searchId
 }) => {
   if (loading) {
     return (
@@ -28,13 +32,30 @@ const EmployeeTable = ({
 
   if (!employees || employees.length === 0) {
     return (
+      <>
+          <TextField
+  label="Search Employee by ID"
+  variant="outlined"
+  value={searchId}
+  onChange={(e) => setSearchId(e.target.value)}
+  sx={{ marginBottom: 2 }}
+/>
       <Typography align="center" mt={4}>
         No employees found
       </Typography>
+      </>
     );
   }
 
-  return (
+  return (   
+    <>
+              <TextField
+  label="Search Employee by ID"
+  variant="outlined"
+  value={searchId}
+  onChange={(e) => setSearchId(e.target.value)}
+  sx={{ marginBottom: 2 }}
+/>
     <TableContainer component={Paper} sx={{ mt: 3 }}>
       <Table>
         <TableHead>
@@ -67,6 +88,7 @@ const EmployeeTable = ({
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
 };
 
