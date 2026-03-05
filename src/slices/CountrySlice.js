@@ -9,10 +9,10 @@ export const fetchCountries = createAsyncThunk(
   },
 );
 
-const countrySlice = createSlice({
+const countrySlice = createSlice({  
   name: "country",
   initialState: {
-    list: [],
+    countryList: [],
     loading: false,
     error: null,
   },
@@ -24,7 +24,7 @@ const countrySlice = createSlice({
       })
       .addCase(fetchCountries.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+        state.countryList = action.payload;
       })
       .addCase(fetchCountries.rejected, (state, action) => {
         state.loading = false;
