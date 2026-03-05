@@ -25,7 +25,7 @@ const countrySlice = createSlice({
       .addCase(fetchCountries.fulfilled, (state, action) => {
         state.loading = false;
         state.countryList = action.payload;
-      })
+      })  
       .addCase(fetchCountries.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;

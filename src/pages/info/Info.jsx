@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees, deleteEmployee } from "../../slices/EmployeeSlice";
 import { fetchCountries } from "../../slices/CountrySlice";
 import EmployeeTable from "../../components/table/Table";
+import { useNavigate } from "react-router-dom";
 
 const Info = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { list, loading } = useSelector((state) => state.employee);
   const { countryList } = useSelector((state) => state.country)
   const [searchId, setSearchId] = useState("");
@@ -32,9 +34,13 @@ const Info = () => {
     dispatch(deleteEmployee(id)) 
   }
 
+  const onEdit = (id) => {
+    navigate(`/employees/edit/${id}`)
+  }
+
   if (loading) return <p>Loading...</p>;
 
-  return <EmployeeTable employees={filteredEmployees} onDelete={onDelete} setSearchId={setSearchId} searchId={searchId}/>;
+  return <EmployeeTable employees={filteredEmployees} onDelete={onDelete} onEdit={onEdit} setSearchId={setSearchId} searchId={searchId}/>;
 };
 
 export default Info;
